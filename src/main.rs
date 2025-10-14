@@ -26,17 +26,17 @@ struct Args {
 
 /// Parses e.g. "0.0 0.001 0.033 ..." to u16 representing the same [0, 1] domain
 fn parse_curve(input: &str) -> Vec<u16> {
-    return input
+    input
         .split(" ")
         .map(|it| it.parse::<f64>().expect("failed to parse number"))
         .inspect(|&v| {
             assert!(
-                v >= 0.0 && v <= 1.0,
+                (0.0..=1.0).contains(&v),
                 "malformed input: curve value outside [0, 1]"
             )
         })
         .map(|f| (f * (u16::MAX) as f64).round() as u16)
-        .collect();
+        .collect()
 }
 
 /// Scales from 0-65535 to 0-255
